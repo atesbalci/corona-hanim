@@ -1,0 +1,25 @@
+{
+  "name": "corona-hanim",
+  "version": "1.0.0",
+  "description": "corona tr bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atesbalci/corona-hanim.git"
+  },
+  "author": "atesbalci",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/atesbalci/corona-hanim/issues"
+  },
+  "homepage": "https://github.com/atesbalci/corona-hanim#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "got": "^11.6.0",
+    "https": "^1.0.0"
+  }
+}
