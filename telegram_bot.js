@@ -1,5 +1,5 @@
 const https = require('https');
-const { getTodayCorona, getYesterdayCorona, newDataAvailableListeners } = require('./corona_utils');
+const { getTodayCorona, getYesterdayCorona, newDataAvailableListeners, getDateCorona, refreshData } = require('./corona_utils');
 
 module.exports.prepareCoronaTelegramExpress = function prepareCoronaTelegramExpress(expressApp) {  
     newDataAvailableListeners.push(onNewData);
@@ -8,17 +8,22 @@ module.exports.prepareCoronaTelegramExpress = function prepareCoronaTelegramExpr
         try {
             let chatId = req.body.message.chat.id;
             let command = req.body.message.text;
+            let match;
   
             console.log(chatId);
             if (command.includes('/buguncorona')) {
                 getTodayCorona(data => sendData(data, chatId));
             } else if (command.includes('/duncorona')) {
                 getYesterdayCorona(data => sendData(data, chatId));
+            } else if ((match = command.match(/\/oguncorona ([0-9]{2}\/[0-9]{2}\/[0-9]{4})/))) {
+                getDateCorona(match[1], data => sendData(data, chatId));
             }
         } catch (error) {
             console.log(error);
         }
     });
+    
+    setInterval(() => refreshData(null), 300000);
 }
   
 function sendMessage(chatId, message) {
@@ -30,5 +35,5 @@ function onNewData(data) {
 }
 
 function sendData(data, chatId) {
-    sendMessage(chatId, `${data.cases}`);
+    sendMessage(chatId, `Tarih:+${data.date}%0aYeni+Vaka:+${data.cases}%0aTest:+${data.tests}%0aOlum:+${data.deaths}%0aIyilesen:+${data.recovered}`);
 }

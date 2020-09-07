@@ -19,11 +19,13 @@ async function refreshData(callback) {
         }
 
         dateLastFetched = latestDate;
-        callback();
+        if (callback != null) callback();
     } catch (error) {
         console.log(error);
     }
 }
+
+module.exports.refreshData = refreshData;
 
 function getLatest() {
     const today = todayFormatted();
