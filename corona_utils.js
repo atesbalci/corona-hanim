@@ -46,13 +46,13 @@ function dateFormatted(day, month, year) {
 
 function todayFormatted() {
     const date = new Date();
-    return dateFormatted(date.getDay(), date.getMonth(), date.getFullYear());
+    return dateFormatted(date.getDate(), date.getMonth() + 1, date.getFullYear());
 }
 
 function yesterdayFormatted() {
     const date = new Date();
     date.setDate(date.getDate() - 1);
-    return dateFormatted(date.getDay(), date.getMonth(), date.getFullYear());
+    return dateFormatted(date.getDate(), date.getMonth() + 1, date.getFullYear());
 }
 
 function toDate(s) {
