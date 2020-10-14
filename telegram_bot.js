@@ -35,5 +35,5 @@ function onNewData(data) {
 }
 
 function sendData(data, chatId) {
-    sendMessage(chatId, `Tarih:+${data.date}%0aYeni+Vaka:+${data.cases}%0aTest:+${data.tests}%0aOlum:+${data.deaths}%0aIyilesen:+${data.recovered}`);
+    sendMessage(chatId, `Tarih:+${data.date}%0aYeni+'Hasta':+${data.cases}%0aTest:+${data.tests}%0aOlum:+${data.deaths}%0aIyilesen:+${data.recovered}`);
 }
