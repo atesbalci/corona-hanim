@@ -1,10 +1,20 @@
-const https = require('https');
+const { Telegraf } = require('telegraf');
 const { getTodayCorona, getYesterdayCorona, newDataAvailableListeners, getDateCorona, refreshData } = require('./corona_utils');
 
-function handleCoronaTelegram(req, res) {    
+let bot;
+
+module.exports.startCoronaTelegramBot = function(botToken) {
+    bot = new Telegraf(botToken);
+    newDataAvailableListeners.push(onNewData);
+    setInterval(() => refreshData(null), 300000);
+    bot.on('text', onText);
+    bot.launch();
+}
+
+function onText(ctx) {
     try {
-        let chatId = req.body.message.chat.id;
-        let command = req.body.message.text;
+        let chatId = ctx.message.chat.id;
+        let command = ctx.message.text;
         let match;
 
         console.log(chatId);
@@ -19,15 +29,9 @@ function handleCoronaTelegram(req, res) {
         console.log(error);
     }
 }
-
-module.exports.handleCoronaTelegram = handleCoronaTelegram;
-module.exports.initCoronaTelegram = function initCoronaTelegram() {
-    newDataAvailableListeners.push(onNewData);
-    setInterval(() => refreshData(null), 300000);
-}
   
 function sendMessage(chatId, message) {
-    https.get(`${process.env.CORONA_TELEGRAM_SEND_URL_PREFIX}chat_id=${chatId}&text=${message}`);
+    bot.telegram.sendMessage(chatId, message);
 }
 
 function onNewData(data) {
@@ -35,5 +39,5 @@ function onNewData(data) {
 }
 
 function sendData(data, chatId) {
-    sendMessage(chatId, `Tarih:+${data.date}%0aYeni+Vaka:+${data.cases}%0aTest:+${data.tests}%0aOlum:+${data.deaths}%0aIyilesen:+${data.recovered}`);
+    sendMessage(chatId, `Tarih: ${data.date}\nYeni Vaka: ${data.cases}\nTest: ${data.tests}\nOlum: ${data.deaths}\nIyilesen: ${data.recovered}`);
 }

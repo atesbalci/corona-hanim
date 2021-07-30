@@ -20,6 +20,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "got": "^11.6.0",
-    "https": "^1.0.0"
+    "https": "^1.0.0",
+    "telegraf": "^4.4.1"
   }
 }
